@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Tinder Swipe</title>
+  </head>
+  <body>
+    <main class="phone">
+      <header>
+        <img
+          src="../assets/tinder-logo.webp"
+          alt="Tinder Logo"
+          width="24"
+          height="24"
+        />
+      </header>
+      <div class="cards">
+        <article>
+          <img
+            src="../assets/2.webp"
+            alt="Álex, brown hair man, 25 years old"
+          />
+          <h2>
+            <span class="message like">
+              <strong>LIKE</strong>
+            </span>
+            <span class="message nope">
+              <strong>NOPE</strong>
+            </span>
+            <strong>Alex</strong>
+            <span>25</span>
+          </h2>
+        </article>
+        <article>
+          <img src="../assets/1.webp" alt="Leila, redhead, 27 years old" />
+          <h2>
+            <span class="message like">
+              <strong>LIKE</strong>
+            </span>
+            <span class="message nope">
+              <strong>NOPE</strong>
+            </span>
+            <strong>Leila</strong>
+            <span>27</span>
+          </h2>
+        </article>
+        <span class="unavailable">
+          No hay más personas cerca de ti...<br />
+          Vuelve a intentarlo más tarde
+        </span>
+      </div>
+      <footer>
+        <button type="button" aria-label="undo" class="is-undo" />
+        <button type="button" aria-label="remove" class="is-remove is-big" />
+        <button type="button" aria-label="star" class="is-star" />
+        <button type="button" aria-label="fav" class="is-fav is-big" />
+        <button type="button" aria-label="zap" class="is-zap" />
+      </footer>
+    </main>
+    <script src="./swipe.js" defer fetchpriority="high" />
+  </body>
+</html>
