@@ -1,0 +1,57 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  & main {
+    position: relative;
+    & button {
+      border: none;
+      color: white;
+      position: absolute;
+      /* opacity: 0.3; */
+      inset: 0;
+      background: none;
+      backdrop-filter: blur(1px);
+
+      filter: drop-shadow(0 0 10px white);
+      font-family: 'Press Start 2P', cursive;
+      /* background: #000; */
+      cursor: pointer;
+      & div {
+        display: flex;
+        flex-direction: column;
+      }
+      & strong {
+        position: relative;
+        z-index: 10;
+
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.game {
+  border: 1px solid white;
+  background: url('./assets/bkg.png');
+}
+
+.hide {
+  display: none;
+}
