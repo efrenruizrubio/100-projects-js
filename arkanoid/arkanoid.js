@@ -12,18 +12,12 @@ const BALL_COLLISION_X_NEGATIVE = BALL_LENGHT
 const BALL_COLLISION_X_POSITIVE = CANVAS_WIDTH - BALL_LENGHT
 const BALL_COLLISION_Y_NEGATIVE = BALL_LENGHT / 2 + 1
 const BALL_COLLISION_Y_POSITIVE = CANVAS_HEIGHT - BALL_LENGHT / 2 + 1
+const CANVAS_MIDDLE_POINT = CANVAS_WIDTH / 2 + BALL_LENGHT / 2
 
 const DIRECTION_UP = 'up'
 const DIRECTION_RIGHT = 'right'
 const DIRECTION_DOWN = 'down'
 const DIRECTION_LEFT = 'left'
-
-// const BALL_NEXT_DIRECTION = {
-//   [DIRECTION_UP]: DIRECTION_RIGHT,
-//   [DIRECTION_RIGHT]: DIRECTION_DOWN,
-//   [DIRECTION_DOWN]: DIRECTION_LEFT,
-//   [DIRECTION_LEFT]: DIRECTION_UP
-// }
 
 const canvas = document.querySelector('canvas')
 const button = document.querySelector('button')
@@ -74,72 +68,57 @@ function drawBall() {
   ctx.stroke()
 }
 
+const handleVelocity = {
+  [DIRECTION_UP]: () => (ball.y -= 2),
+  [DIRECTION_RIGHT]: () => (ball.x += 2),
+  [DIRECTION_DOWN]: () => (ball.y += 2),
+  [DIRECTION_LEFT]: () => (ball.x -= 2)
+}
+
 function checkCollision() {
   const playerLeft = player - 3
   const playerRight = player + 78
   const currentX = Math.floor(ball.x)
   const currentY = Math.floor(ball.y)
-  const leftAngle = currentX - playerLeft
-  const rightAngle = playerRight - currentX
-  const isLeft = leftAngle < rightAngle
+  const collidesWithPlayer = playerLeft <= currentX && playerRight >= currentX
+  const bounceLeft =
+    collidesWithPlayer && currentX - playerLeft < playerRight - currentX
 
-  if (
-    currentY >= 547 &&
-    currentY <= 550 &&
-    playerLeft <= currentX &&
-    playerRight >= currentX
-  ) {
+  if (currentY >= 547 && currentY <= 550 && collidesWithPlayer) {
     ball.directions = [DIRECTION_UP]
-    if (isLeft) {
-      ball.directions = [...ball.directions, DIRECTION_LEFT]
+    if (bounceLeft) {
+      ball.directions.push(DIRECTION_LEFT)
     } else {
-      ball.directions = [...ball.directions, DIRECTION_RIGHT]
+      ball.directions.push(DIRECTION_RIGHT)
     }
   } else if (
-    currentX === BALL_COLLISION_X_NEGATIVE || 
+    currentX === BALL_COLLISION_X_NEGATIVE ||
     currentX === BALL_COLLISION_X_POSITIVE
   ) {
-    ball.directions = ball.directions.map(
-      (direction) => BALL_NEXT_DIRECTION[direction]
-    )
+    const isLeft = currentX < CANVAS_MIDDLE_POINT
+
+    const isGoingDown = ball.directions.includes(DIRECTION_DOWN)
+
+    ball.directions = [isGoingDown ? DIRECTION_DOWN : DIRECTION_UP]
 
     if (isLeft) {
-      ball.directions = [DIRECTION_UP, DIRECTION_RIGHT]
+      ball.directions.push(DIRECTION_RIGHT)
     } else {
-      ball.directions = [DIRECTION_UP, DIRECTION_LEFT]
+      ball.directions.push(DIRECTION_LEFT)
     }
   }
 
-  console.log({ currentY, BALL_COLLISION_Y_NEGATIVE })
   if (currentY === BALL_COLLISION_Y_NEGATIVE) {
-    if (isLeft) {
-      ball.directions = [DIRECTION_DOWN, DIRECTION_RIGHT]
-    } else {
+    const isGoingLeft = ball.directions.includes(DIRECTION_LEFT)
+    if (isGoingLeft) {
       ball.directions = [DIRECTION_DOWN, DIRECTION_LEFT]
+    } else {
+      ball.directions = [DIRECTION_DOWN, DIRECTION_RIGHT]
     }
   }
 
   ball.directions.forEach((direction) => {
-    switch (direction) {
-      case DIRECTION_UP: {
-        ball.y -= 2
-        break
-      }
-      case DIRECTION_RIGHT: {
-        ball.x += 2
-        break
-      }
-      case DIRECTION_DOWN: {
-        ball.y += 2
-        break
-      }
-      case DIRECTION_LEFT: {
-        ball.x -= 2
-        break
-      }
-      default:
-        return
-    }
+    handleVelocity[direction]()
   })
 }
 
